@@ -217,4 +217,35 @@ st.info("여기에 학생이 직접 관찰한 내용을 적어보세요. (예: �
 
 st.divider()
 
+# =========================================
+# 8. 첫 주 관객 수가 총 관객 수를 얼마나 잘 예측할까? (산점도 + 추세선)
+# =========================================
+st.header("8. 첫 주 관객 수가 총 관객 수를 얼마나 잘 예측할까?")
+
+fig8 = px.scatter(
+    df,
+    x="first_week_audi",
+    y="total_audi",
+    color="genre",
+    hover_name="movieNm",
+    trendline="ols",
+    trendline_scope="overall",
+    labels={"first_week_audi": "개봉 첫 주 관객", "total_audi": "총 관객 수"},
+    title="첫 주 관객 수가 총 관객 수를 얼마나 잘 예측할까?"
+)
+
+st.plotly_chart(fig8, use_container_width=True)
+
+# 상관계수 계산
+correlation = df['first_week_audi'].corr(df['total_audi'])
+
+st.markdown("#### 📌 이 그래프로 알 수 있는 것")
+st.info(
+    f"첫 주 관객 수와 총 관객 수의 상관계수는 **{correlation:.2f}**입니다. "
+    f"(1에 가까울수록 강한 비례 관계, 0에 가까울수록 관계가 약함) "
+    f"점들이 검은색 추세선에 가깝게 모여 있을수록 첫 주 관객으로 총 관객을 잘 예측할 수 있다는 뜻입니다."
+)
+
+st.divider()
+
 st.caption("데이터 출처: KOBIS(영화진흥위원회) 박스오피스 데이터")
